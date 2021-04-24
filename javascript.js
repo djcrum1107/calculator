@@ -20,6 +20,7 @@ function buttonStyleSetup(){
 
 //All buttons pressed will add to the input string with the exception of backspace and clear
 function buttonClicked(e){
+    console.log(e.target);
     clicked(e.target.value)
 }
 
@@ -69,6 +70,13 @@ function clicked(value){
         inputString += `${value}`;
         display.innerText = inputString;
     }
+    if(value == "."){
+        if(inputString.includes(".")){
+            return;
+        }
+        inputString += `${value}`;
+        display.innerText = inputString;
+    }
     if(value == "="){
         //If there is no operand no equation can be done
         if(operand == ""){return}
@@ -111,7 +119,8 @@ function equate(){
             break;
         case "/":
             result = divide(x, y);
-    }
+    };
+    result = Math.round((result + Number.EPSILON) * 10000000000) / 10000000000;
     if(typeof(result) != "string"){
         inputString = result.toString();
     }else{
@@ -121,11 +130,13 @@ function equate(){
     display.innerText = inputString;
 };
 
+//Clear the input string that everything works with and resets the display
 function clearCalc(){
     inputString = "";
     display.innerText = 0;
 }
 
+//Removes the last character from the input string for each press
 function backspace(){
     inputString = inputString.slice(0, -1);
     display.innerText = inputString;
@@ -145,7 +156,8 @@ function multiply(x, y = 1){
 
 function divide(x, y = 1){
     if(y == 0){
-        display.innerText = "SNARKY ERROR";
+        console.log("SNARKY ERROR for trying to divide by zero");
+        alert("Halt! Stop in the name of the law! You shouldn't try to divide by zero!")
         return 0;
     }
     return x / y;
