@@ -32,9 +32,12 @@ function keyDown(e){
             passedValue = "=";
         }else if(e.key == "Backspace"){
             passedValue = "backspace";
+        }else if(e.key == "Delete"){
+            passedValue = "clear";
         }else{
             passedValue = e.key;
         }
+        console.log(e.key);
         clicked(passedValue);
     }
 }
@@ -66,7 +69,7 @@ function clicked(value){
         inputString += `${value}`;
         display.innerText = inputString;
     }
-    if (value == "="){
+    if(value == "="){
         //If there is no operand no equation can be done
         if(operand == ""){return}
         if(typeof(inputString) == "number"){
@@ -76,6 +79,14 @@ function clicked(value){
             inputString = inputString.slice(0, -1)
         }
         equate();
+    };
+
+    if(value == "clear"){
+        clearCalc();
+    };
+
+    if(value == "backspace"){
+        backspace();
     };
 };
 
@@ -109,6 +120,16 @@ function equate(){
     operand = "";
     display.innerText = inputString;
 };
+
+function clearCalc(){
+    inputString = "";
+    display.innerText = 0;
+}
+
+function backspace(){
+    inputString = inputString.slice(0, -1);
+    display.innerText = inputString;
+}
 
 function add(x, y = 0){
     return x + y;
