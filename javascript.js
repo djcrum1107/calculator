@@ -2,14 +2,44 @@ window.onload = buttonStyleSetup;
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("input");
 const buttonsArray = Array.from(buttons);
-let numericalRe = /[1-9]/;
+let numericalRe = /[0-9]/;
 let operandRe = /\/|\*|\-|\+/;
 let inputString = "";
 let operand = "";
 
+document.addEventListener("keydown", keyDown);
+
+// This is an initial function to dynamically add to the grid area based
+// on the button id rather than individually in the css
+function buttonStyleSetup(){
+    buttons.forEach(button => {
+        button.style.gridArea = button.id;
+        button.addEventListener('click', buttonClicked);
+    });
+};
+
 //All buttons pressed will add to the input string with the exception of backspace and clear
-function buttonPressed(e){
-    let value = e.target.value;
+function buttonClicked(e){
+    clicked(e.target.value)
+}
+
+//Hard coded exceptions to the event key value matching desired behavior
+function keyDown(e){
+    if(document.hasFocus()){
+        e.preventDefault();
+        let passedValue = "";
+        if(e.key == "Enter"){
+            passedValue = "=";
+        }else if(e.key == "Backspace"){
+            passedValue = "backspace";
+        }else{
+            passedValue = e.key;
+        }
+        clicked(passedValue);
+    }
+}
+function clicked(value){
+    //let value = target.value; (Left in to show when pulling e directly how to get the value)
     //If the button is a number only add it to the string that is in display
     if(numericalRe.test(value)){
         inputString += `${value}`;
@@ -52,16 +82,6 @@ function buttonPressed(e){
 function lastChar(inputString){
     return inputString[inputString.length - 1]
 }
-
-
-// This is an initial function to dynamically add to the grid area based
-// on the button id rather than individually in the css
-function buttonStyleSetup(){
-    buttons.forEach(button => {
-        button.style.gridArea = button.id;
-        button.addEventListener('click', buttonPressed);
-    });
-};
 
 function equate(){
     let [x, y] = inputString.split(operand);
