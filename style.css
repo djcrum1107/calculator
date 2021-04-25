@@ -57,6 +57,8 @@ input:active{
     text-align:right;
     font-family: "Digital";
     font-size: 90px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .operand{
