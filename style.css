@@ -48,7 +48,8 @@ input:active{
 
 #display{
     grid-area: display;
-    max-width: 95%;
+    min-width: 95%;
+    max-width: 98%;
     border: 1px solid slategrey;
     border-radius: 5px;
     padding: 5px;
