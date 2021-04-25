@@ -35,11 +35,20 @@ input{
     border: solid 1px black;
     border-radius: 10px;
     font-size: 30px;
-    
+    box-shadow: 2px 1px #888888;
+}
+
+input:hover{
+    box-shadow: 2px 1px #F2E9E4;
+}
+
+input:active{
+    box-shadow: 1px 0px #F2E9E4;
 }
 
 #display{
     grid-area: display;
+    max-width: 95%;
     border: 1px solid slategrey;
     border-radius: 5px;
     padding: 5px;

@@ -6,6 +6,7 @@ let numericalRe = /[0-9]/;
 let operandRe = /\/|\*|\-|\+/;
 let inputString = "";
 let operand = "";
+let displayLength = 12;
 
 document.addEventListener("keydown", keyDown);
 
@@ -20,15 +21,14 @@ function buttonStyleSetup(){
 
 //All buttons pressed will add to the input string with the exception of backspace and clear
 function buttonClicked(e){
-    console.log(e.target);
     clicked(e.target.value)
 }
 
 //Hard coded exceptions to the event key value matching desired behavior
 function keyDown(e){
     if(document.hasFocus()){
-        e.preventDefault();
         let passedValue = "";
+        if(e.key == " "){e.preventDefault();} //Prevents default space causing scroll down but does nothing to the calculator
         if(e.key == "Enter"){
             passedValue = "=";
         }else if(e.key == "Backspace"){
@@ -38,7 +38,6 @@ function keyDown(e){
         }else{
             passedValue = e.key;
         }
-        console.log(e.key);
         clicked(passedValue);
     }
 }
@@ -47,7 +46,7 @@ function clicked(value){
     //If the button is a number only add it to the string that is in display
     if(numericalRe.test(value)){
         inputString += `${value}`;
-        display.innerText = inputString;
+        displayChange(inputString);
     };
     if(operandRe.test(value)){
         //Ignore if an operand is called before any number do nothing
@@ -68,14 +67,14 @@ function clicked(value){
         //Operand is saved separately for equate use
         operand = value;
         inputString += `${value}`;
-        display.innerText = inputString;
+        displayChange(inputString);
     }
     if(value == "."){
         if(inputString.includes(".")){
             return;
         }
         inputString += `${value}`;
-        display.innerText = inputString;
+        displayChange(inputString);
     }
     if(value == "="){
         //If there is no operand no equation can be done
@@ -127,8 +126,18 @@ function equate(){
         inputString = result;
     };
     operand = "";
-    display.innerText = inputString;
+    displayChange(inputString);
 };
+
+function displayChange(inputString){
+    if(typeof(inputString) != "string"){
+        inputString.toString();
+    }
+    inputString = inputString.length > displayLength ? 
+            inputString.substring(0, displayLength - 1) + "..." : 
+            inputString;
+    display.innerText = inputString;
+}
 
 //Clear the input string that everything works with and resets the display
 function clearCalc(){
@@ -139,7 +148,7 @@ function clearCalc(){
 //Removes the last character from the input string for each press
 function backspace(){
     inputString = inputString.slice(0, -1);
-    display.innerText = inputString;
+    displayChange(inputString);
 }
 
 function add(x, y = 0){
